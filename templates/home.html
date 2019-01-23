@@ -1,8 +1,13 @@
 {%extends "layout.html"%}
 {%block content%}
     {%for book in books%}
-        <h1>{{book.title}}</h1>
-        <p>BY: {{book.author}} Released: {{book.date_published}}</p>
-        <p>{{book.description}}</p>
+        <div class="row border">
+            <div class = "col">
+                <h1>{{book.title}}</h1>
+                <p>BY: {{book.author}} Released: {{book.date_published}}</p>
+                <p>{{book.description}}</p>
+            </div>
+        </div>
+
     {%endfor%}
-{%end block content%}
+{%endblock content%}
