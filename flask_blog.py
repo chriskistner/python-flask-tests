@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 app = Flask(__name__)
 
 books = [
@@ -9,7 +9,7 @@ books = [
         "date_published": '10/15/2012'
     },
         {
-        "Author": "Chris Kistner",
+        "author": "Chris Kistner",
         "title": "The Pangaea Project: Revenants",
         "description": "The Adventure Continues as Colonel West leads an infiltration team to Earth.",
         "date_published": '4/8/2015'
