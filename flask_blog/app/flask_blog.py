@@ -1,14 +1,14 @@
 from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegisterationForm, LoginForm
-from flask_sqlalchemy import sqlalchemy
-from dbcon import DB_URL
+from flask_sqlalchemy import SQLAlchemy
+from dbcon import DB_URL, get_env_variable
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'ohtheironcewasastoryaboutaguynamedalandhelivedinthesewerswithhislobsterpals'
-app.config['SQLALCHEMY_DATABASE_URI'] = dbcon.DB_URL
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
-db=sqlalchemy(app)
+db=SQLAlchemy(app)
 db.init_app(app)
 
 books = [
@@ -29,6 +29,7 @@ books = [
 @app.route("/")
 @app.route("/home")
 def home():
+    print(get_env_variable('POSTGRES_USER'))
     return render_template('home.html', books=books)
 
 @app.route("/about")
