@@ -1,9 +1,15 @@
 from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegisterationForm, LoginForm
+from flask_sqlalchemy import sqlalchemy
+from dbcon import DB_URL
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'ohtheironcewasastoryaboutaguynamedalandhelivedinthesewerswithhislobsterpals'
+app.config['SQLALCHEMY_DATABASE_URI'] = dbcon.DB_URL
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+db=sqlalchemy(app)
+db.init_app(app)
 
 books = [
     {
