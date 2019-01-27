@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegisterationForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
@@ -10,6 +11,30 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
 db=SQLAlchemy(app)
 db.init_app(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key= True)
+    username = db.Column(db.String(20), unique= True, nullable= False )
+    email = db.Column(db.String(120), unique= True, nullable= False )
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+    posts = db.relationship('Book', backref='author', lazy=True)
+
+    def __repr__(self):
+        return f"user('{self.username}, {self.email}, {self.image}')" 
+
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(100), nullable= False)
+    date_published = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
+    description = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"user('{self.title}, {self.date_published}')" 
+
+
+
 
 books = [
     {
@@ -29,7 +54,7 @@ books = [
 @app.route("/")
 @app.route("/home")
 def home():
-    print(get_env_variable('POSTGRES_USER'))
+    print(get_env_variable('POSTGRES_DB'))
     return render_template('home.html', books=books)
 
 @app.route("/about")
